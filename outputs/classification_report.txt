@@ -1,0 +1,12 @@
+                        precision    recall  f1-score   support
+
+Pepper__bell___healthy       1.00      0.99      1.00       149
+  Potato___Late_blight       1.00      1.00      1.00       100
+      Potato___healthy       1.00      1.00      1.00        16
+   Tomato_Early_blight       1.00      0.98      0.99       100
+    Tomato_Late_blight       0.98      0.99      0.99       192
+        Tomato_healthy       0.99      1.00      1.00       160
+
+              accuracy                           0.99       717
+             macro avg       1.00      0.99      1.00       717
+          weighted avg       0.99      0.99      0.99       717

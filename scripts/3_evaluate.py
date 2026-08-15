@@ -36,7 +36,7 @@ def main ():
 
     #rebuild the same architecture, then load the traine weights into it
     model = models.resnet18(weights=None)
-    model.fc = torch.nn.Linear(model.fc.in_geatures, len(classes))
+    model.fc = torch.nn.Linear(model.fc.in_features, len(classes))
     model.load_state_dict(torch.load(CHECKPOINT_DIR / "best_model.pth", map_location=DEVICE))
     model = model.to(DEVICE)
     model.eval() # turns off dropout etc. - important for evaluation
