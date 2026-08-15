@@ -17,7 +17,7 @@ from PIL import Image
 from pathlib import Path
 from torchvision import transforms, models
 from pytorch_grad_cam import GradCAM
-from pytorch_grad_cam.utiles.model_targets import ClassifierOutputTarget
+from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
 import matplotlib.pyplot as plt
 import random
@@ -39,14 +39,14 @@ def load_model(classes):
     return model
 
 def predict_and_visualise(model, img_path, true_class_idx, classes, cam, transform, tag):
-    image = Image,open(img_path).convert("RGB")
-    input_tensor = transform(image).unqueeze(0).to(DEVICE)
+    image = Image.open(img_path).convert("RGB")
+    input_tensor = transform(image).unsqueeze(0).to(DEVICE)
 
     with torch.no_grad():
         output = model(input_tensor)
         pred_idx = output.argmax(1).item()
 
-    tragets = [ClassifierOutputTarget(pred_idx)]
+    targets = [ClassifierOutputTarget(pred_idx)]
     grayscale_cam = cam(input_tensor=input_tensor, targets=targets)[0]
 
     rgb_img = np.array(image.resize((224, 224))) / 255.0
@@ -103,6 +103,11 @@ def main():
             final_path = out_path.with_name(out_path.name.replace("tmp_", "correct_"))
             out_path.rename(final_path)
             print(f"Saved correct example: {final_path}")
+        elif not was_correct and incorrect_found < N_INCORRECT_EXAMPLES:
+            incorrect_found += 1
+            final_path = out_path.with_name(out_path.name.replace("tmp__", "incorrect_"))
+            out_path.rename(final_path)
+            print(f"Saved incorrect example: {final_path}")
         else:
             out_path.unlink() # already have enough of this category, discard
     
