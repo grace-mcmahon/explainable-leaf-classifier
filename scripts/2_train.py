@@ -9,8 +9,7 @@ Run with: pyhton scripts/2_train.py
 
 import torch #This is importing the core PyTorch library 
 import torch.nn as nn #neural network building blocks (layers, loss functions)
-import torch.utils.data  #handles batching and shuffling  data during training
-import DatatLoader
+from torch.utils.data import DataLoader  #handles batching and shuffling  data during training
 from torchvision import datasets, transforms, models # Datasets/image tools, image processing, pretrained models
 from pathlib import Path # For clean fiel path handling
 from tqdm import tqdm # Provides progress bar in the terminal while training 
@@ -21,7 +20,7 @@ DATA_DIR = Path("data")
 OUTPUT_DIR = Path("outputs/checkpoints")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True) # Let's create the folder if it already does not exist 
 
-BATCH_Size = 32 # This is an assigned number for how mant images the model looks at per training step 
+BATCH_SIZE = 32 # This is an assigned number for how mant images the model looks at per training step 
 EPOCHS = 10 # How many full passes through the entire training set
 LEARNING_RATE = 1e-4 # how big a step the model takes when learning from its mistakes
 
@@ -33,10 +32,10 @@ def get_dataloaders():
     #Transofrmations applied to TRAINING images: resize, then randomly flip/rotate
     # (this is "data augmentation" - it artificially creates variety,  which helps)
     # the model generalise instead of just memorising the exact training images
-    train_transform = transformas.Compose([
+    train_transform = transforms.Compose([
         transforms.Resize((224, 224)), # ResNet expects 224x224 images
         transforms.RandomHorizontalFlip(), # randomly flip left-right
-        transforms.RandomRotations(15), # randomly rotate up to 15 degress
+        transforms.RandomRotation(15), # randomly rotate up to 15 degress
         transforms.ToTensor(), # convert image to a PyTorch tensor (numbers)
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         # ^ These specific numbers are the average pizel values ResNet was
@@ -50,12 +49,12 @@ def get_dataloaders():
     ])
     # ImageFolder auomatically reads your data.train and data/val folders, 
     # and treats each sub-folder name as a class label
-    train_ds = datasets.ImaeFolder(DATA_DIR / "train", transform=train_transform)
+    train_ds = datasets.ImageFolder(DATA_DIR / "train", transform=train_transform)
     val_ds = datasets.ImageFolder(DATA_DIR / "val", transform=eval_transform)
     # DataLoader wraps the dataset and hands out images in batches of BATCH_SIZE,
     # shuffling the training set each epoch (val doesnt need shuffling) 
-    train_loader = Dataloader(train_ds, batch_size = BATCH_SIZE, shuffle=True, num_workers=2)
-    val_loader = Dataloader(val_ds, batch_size = BATCH_SIZE, shuffle = False, num_workers = 2)
+    train_loader = DataLoader(train_ds, batch_size = BATCH_SIZE, shuffle=True, num_workers=2)
+    val_loader = DataLoader(val_ds, batch_size = BATCH_SIZE, shuffle = False, num_workers = 2)
 
     return train_loader, val_loader, train_ds.classes  # classes = list of class names, e.g.["Tomato__healthy", ...]
 
@@ -63,7 +62,7 @@ def build_model(num_classes):
     """Loads a pretrained ResNet18 and adapts its final layer to our number of classes."""
 
     # Load ResNet18 with weights already trained on ImageNet (1000 general classes)
-    model = models.resnet18(weights=models.ResNet18_Weigths.IMAGENET1K_V1)
+    model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
     # ResNet's original final layer outputs 1000 numbers (one per ImageNet class).
     # We swap it for a new layer outputting exactly `num_classes` numbers instead —
     # this is the key trick in transfer learning: reuse everything the model
@@ -138,13 +137,13 @@ def main():
         # happened to finish last (which could slightly overfit)
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            torch.save(model.state_dict(), OUTPUT_DIR / "best_Model.pth")
+            torch.save(model.state_dict(), OUTPUT_DIR / "best_model.pth")
             print(f" -> New best model saved (val_acc={val_acc: .4f})")
     # Save the full training history too, useful for writing up your README later
     with open(OUTPUT_DIR / "training_history.json", "w") as f:
         json.dump(history, f, indent=2)
     
-    print(f"\nTraining complete. Bets val accuracy: {best_val_acc: .4f}")
+    print(f"\nTraining complete. Best val accuracy: {best_val_acc: .4f}")
     print(f"Best model saved to {OUTPUT_DIR / 'best_model.pth'}")
 
 if __name__ == "__main__":
