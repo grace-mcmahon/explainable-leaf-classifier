@@ -52,7 +52,7 @@ python scripts/3_evaluate.py
 python scripts/4_gradcam.py
 ```
 ## 5. What Was the Outcome
-99% test accuracy across 6 classes. Confirmed by Grad-CAM as the model looks at the lead, not the shortcut.
+99% test accuracy across 6 classes. Confirmed by Grad-CAM as the model looks at the leaf, not the shortcut.
 
 | Class | Precision | Recall | F1 | Support |
 |-------|-----------|--------|----|---------|
@@ -62,3 +62,7 @@ python scripts/4_gradcam.py
 | Tomato — Early Blight | 1.00 | 0.98 | 0.99 | 100 |
 | Tomato — Late Blight | 0.98 | 0.99 | 0.99 | 192 |
 | Tomato — Healthy | 0.99 | 1.00 | 1.00 | 160 |
+
+[Confusion Matrix](outputs/confusion_matrix.png)
+
+*(Roughly 1% of test images were misclassified, too small a number to register visually on the confusion matrix at this scale.)*
