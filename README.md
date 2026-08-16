@@ -17,3 +17,13 @@ A high accuracy score is poor evidence of a well-reasoned model on its own, sinc
 - **Data handling:** NumPy, PIL
 - **Visualisation:** Matplotlib
 - **Tooling:** Git, GitHub, virtual environments (venv)
+
+## 3. How I Approached It
+
+**Prepare → Train → Evaluate → Explain → Report**
+
+1. **Prepare** — Split a 6-class subset of the PlantVillage dataset (downloaded from Kaggle, ~7,100 images across tomato, potato, and pepper) into train/validation/test sets (80/10/10), performed before any training so the test set stays genuinely unseen.
+2. **Train** — Fine-tuned a ResNet18 pretrained on ImageNet via transfer learning, rather than training from scratch, for efficiency and higher performance on a smaller dataset. Validation accuracy was tracked every epoch, keeping only the best-performing checkpoint.
+3. **Evaluate** — Ran the best model once, on the held-out test set it had never seen in any capacity, producing an honest classification report and confusion matrix.
+4. **Explain** — Used Grad-CAM to generate attention heatmaps on both correct and incorrect predictions, to check *what* the model was actually looking at, not just whether it got the right answer.
+5. **Report** — Documented results and limitations honestly, including where the model's reasoning was legitimate and where it was unsatisfactory.
