@@ -63,6 +63,17 @@ python scripts/4_gradcam.py
 | Tomato — Late Blight | 0.98 | 0.99 | 0.99 | 192 |
 | Tomato — Healthy | 0.99 | 1.00 | 1.00 | 160 |
 
-[Confusion Matrix](outputs/confusion_matrix.png)
+![Confusion Matrix](outputs/confusion_matrix.png)
 
 *(Roughly 1% of test images were misclassified, too small a number to register visually on the confusion matrix at this scale.)*
+
+Errors broke into three different types as opposed to one repeated failure pattern;
+
+**① Genuine visual ambiguity** —  Early Blight was mistaken for Late Blight, attention was correctly focused on the lesion. Two diseases that look alike to the trained eye.
+![Early Blight vs Late Blight confusion](outputs/gradcam/incorrect_EarlyvsLate.png)
+
+**② A subtle, borderline case** — a mildly-diseased leaf incorrectly read as healthy, attention correctly placed, symptom too faint to catch. 
+![Subtle disease case](outputs/gradcam/incorrect_LatevsHealthy.png)
+
+**③ The real limitation** — a healthy pepper leaf misread as diseased tomato, with attention focused on the stem and background, not the plant tissue. This is the only case where the model's reasoning and answer was incorrect, and the clearest signal of where more data or regularisation would help. 
+![Attention misplacement on background](outputs/gradcam/incorrect_PeppervsTomato.png)
