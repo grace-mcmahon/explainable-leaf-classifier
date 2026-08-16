@@ -37,3 +37,17 @@ A high accuracy score is poor evidence of a well-reasoned model on its own, sinc
 | Evaluation | [`scripts/3_evaluate.py`](scripts/3_evaluate.py) |
 | Explainability (Grad-CAM) | [`scripts/4_gradcam.py`](scripts/4_gradcam.py) |
 
+**Run it yourself:**
+```bash
+git clone [https://github.com/grace-mcmahon/explainable-leaf-classifier/tree/main]
+cd explainable-leaf-classifier
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Download PlantVillage from Kaggle, unzip, place class folders under data/raw/
+python scripts/1_prepare_data.py
+python scripts/2_train.py
+python scripts/3_evaluate.py
+python scripts/4_gradcam.py
+```
