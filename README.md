@@ -27,3 +27,13 @@ A high accuracy score is poor evidence of a well-reasoned model on its own, sinc
 3. **Evaluate** — Ran the best model once, on the held-out test set it had never seen in any capacity, producing an honest classification report and confusion matrix.
 4. **Explain** — Used Grad-CAM to generate attention heatmaps on both correct and incorrect predictions, to check *what* the model was actually looking at, not just whether it got the right answer.
 5. **Report** — Documented results and limitations honestly, including where the model's reasoning was legitimate and where it was unsatisfactory.
+
+## 4. Where Is the Code
+
+| Step | Script |
+|---|---|
+| Data preparation | [`scripts/1_prepare_data.py`](scripts/1_prepare_data.py) |
+| Model training | [`scripts/2_train.py`](scripts/2_train.py) |
+| Evaluation | [`scripts/3_evaluate.py`](scripts/3_evaluate.py) |
+| Explainability (Grad-CAM) | [`scripts/4_gradcam.py`](scripts/4_gradcam.py) |
+
