@@ -51,3 +51,14 @@ python scripts/2_train.py
 python scripts/3_evaluate.py
 python scripts/4_gradcam.py
 ```
+## 5. What Was the Outcome
+99% test accuracy across 6 classes. Confirmed by Grad-CAM as the model looks at the lead, not the shortcut.
+
+| Class | Precision | Recall | F1 | Support |
+|-------|-----------|--------|----|---------|
+| Pepper (Bell) — Healthy | 1.00 | 0.99 | 1.00 | 149 |
+| Potato — Late Blight | 1.00 | 1.00 | 1.00 | 100 |
+| Potato — Healthy | 1.00 | 1.00 | 1.00 | 16 |
+| Tomato — Early Blight | 1.00 | 0.98 | 0.99 | 100 |
+| Tomato — Late Blight | 0.98 | 0.99 | 0.99 | 192 |
+| Tomato — Healthy | 0.99 | 1.00 | 1.00 | 160 |
